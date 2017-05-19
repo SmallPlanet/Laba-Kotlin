@@ -1,9 +1,9 @@
 package com.smallplanet.laba
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +18,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startAnimations() {
-        target.laba("STUFF")
+        target.laba(">|v|<|^|f")
     }
 }
