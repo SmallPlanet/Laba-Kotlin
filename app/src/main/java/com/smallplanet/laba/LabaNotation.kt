@@ -69,7 +69,7 @@ class LabaNotation(val notation: String, val view: View) {
                 symbol = "<"
                 animator = {
                     view, param, duration ->
-                    var originalPositon = view.x
+                    val originalPositon: Float by lazy { view.x }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.interpolator = OvershootInterpolator()
@@ -77,16 +77,6 @@ class LabaNotation(val notation: String, val view: View) {
                         animation ->
                         view.x = originalPositon - (param ?: defaultParam) * animation.animatedValue as Float
                     }
-                    animator.addListener(object: Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationEnd(animation: Animator?) {}
-                        override fun onAnimationCancel(animation: Animator?) {}
-
-                        override fun onAnimationStart(animation: Animator?) {
-                            originalPositon = view.x
-                        }
-
-                    })
                     animator
                 }
                 description = {
@@ -101,7 +91,7 @@ class LabaNotation(val notation: String, val view: View) {
                 symbol = ">"
                 animator = {
                     view, param, duration ->
-                    var originalPositon = view.x
+                    val originalPositon: Float by lazy { view.x }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.interpolator = OvershootInterpolator()
@@ -109,16 +99,6 @@ class LabaNotation(val notation: String, val view: View) {
                         animation ->
                         view.x = originalPositon + (param ?: defaultParam) * animation.animatedValue as Float
                     }
-                    animator.addListener(object: Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationEnd(animation: Animator?) {}
-                        override fun onAnimationCancel(animation: Animator?) {}
-
-                        override fun onAnimationStart(animation: Animator?) {
-                            originalPositon = view.x
-                        }
-
-                    })
                     animator
                 }
                 description = {
@@ -133,7 +113,7 @@ class LabaNotation(val notation: String, val view: View) {
                 symbol = "^"
                 animator = {
                     view, param, duration ->
-                    var originalPositon = view.y
+                    val originalPositon: Float by lazy { view.y }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.interpolator = OvershootInterpolator()
@@ -141,16 +121,6 @@ class LabaNotation(val notation: String, val view: View) {
                         animation ->
                         view.y = originalPositon - (param ?: defaultParam) * animation.animatedValue as Float
                     }
-                    animator.addListener(object: Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationEnd(animation: Animator?) {}
-                        override fun onAnimationCancel(animation: Animator?) {}
-
-                        override fun onAnimationStart(animation: Animator?) {
-                            originalPositon = view.y
-                        }
-
-                    })
                     animator
                 }
                 description = {
@@ -165,7 +135,7 @@ class LabaNotation(val notation: String, val view: View) {
                 symbol = "v"
                 animator = {
                     view, param, duration ->
-                    var originalPositon = view.y
+                    val originalPositon: Float by lazy { view.y }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.interpolator = OvershootInterpolator()
@@ -173,16 +143,6 @@ class LabaNotation(val notation: String, val view: View) {
                         animation ->
                         view.y = originalPositon + (param ?: defaultParam) * animation.animatedValue as Float
                     }
-                    animator.addListener(object: Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationEnd(animation: Animator?) {}
-                        override fun onAnimationCancel(animation: Animator?) {}
-
-                        override fun onAnimationStart(animation: Animator?) {
-                            originalPositon = view.y
-                        }
-
-                    })
                     animator
                 }
                 description = {
@@ -197,7 +157,7 @@ class LabaNotation(val notation: String, val view: View) {
                 symbol = "f"
                 animator = {
                     view, param, duration ->
-                    var originalAlpha = view.alpha
+                    val originalAlpha: Float by lazy { view.alpha }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.interpolator = OvershootInterpolator()
@@ -205,16 +165,6 @@ class LabaNotation(val notation: String, val view: View) {
                         animation ->
                         view.alpha = originalAlpha - (param ?: defaultParam) * animation.animatedValue as Float
                     }
-                    animator.addListener(object: Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationEnd(animation: Animator?) {}
-                        override fun onAnimationCancel(animation: Animator?) {}
-
-                        override fun onAnimationStart(animation: Animator?) {
-                            originalAlpha = view.alpha
-                        }
-
-                    })
                     animator
                 }
                 description = {
@@ -223,6 +173,72 @@ class LabaNotation(val notation: String, val view: View) {
                 }
                 defaultDuration = 0.75f
                 defaultParam = 1f
+            }
+
+            addLabaOperator {
+                symbol = "r"
+                animator = {
+                    view, param, duration ->
+                    val originalRotation: Float by lazy { view.rotation }
+                    val animator = ValueAnimator.ofFloat(0f, 1f)
+                    animator.duration = (duration ?: defaultDuration * 1000).toLong()
+                    animator.interpolator = OvershootInterpolator()
+                    animator.addUpdateListener {
+                        animation ->
+                        view.rotation = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
+                    }
+                    animator
+                }
+                description = {
+                    _, param ->
+                    "Its going to move the target $param units down"
+                }
+                defaultDuration = 0.75f
+                defaultParam = 360f
+            }
+
+            addLabaOperator {
+                symbol = "p"
+                animator = {
+                    view, param, duration ->
+                    val originalRotation: Float by lazy { view.rotationX }
+                    val animator = ValueAnimator.ofFloat(0f, 1f)
+                    animator.duration = (duration ?: defaultDuration * 1000).toLong()
+                    animator.interpolator = OvershootInterpolator()
+                    animator.addUpdateListener {
+                        animation ->
+                        view.rotationX = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
+                    }
+                    animator
+                }
+                description = {
+                    _, param ->
+                    "Its going to move the target $param units down"
+                }
+                defaultDuration = 0.75f
+                defaultParam = 360f
+            }
+
+            addLabaOperator {
+                symbol = "y"
+                animator = {
+                    view, param, duration ->
+                    val originalRotation: Float by lazy { view.rotationY }
+                    val animator = ValueAnimator.ofFloat(0f, 1f)
+                    animator.duration = (duration ?: defaultDuration * 1000).toLong()
+                    animator.interpolator = OvershootInterpolator()
+                    animator.addUpdateListener {
+                        animation ->
+                        view.rotationY = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
+                    }
+                    animator
+                }
+                description = {
+                    _, param ->
+                    "Its going to move the target $param units down"
+                }
+                defaultDuration = 0.75f
+                defaultParam = 360f
             }
 
         }
