@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startAnimations() {
-        targetPink.laba("vp|>y|^p|<y|fr")
+        targetPink.laba("vp|>y|^p|<y|frs")
 
-        targetBlue.laba("^p|<y|vp|>y|fr")
+        targetBlue.laba("^p|<y|vp|>y|frs")
     }
 }

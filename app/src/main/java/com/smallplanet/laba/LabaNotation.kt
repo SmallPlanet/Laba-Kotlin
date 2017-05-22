@@ -241,6 +241,29 @@ class LabaNotation(val notation: String, val view: View) {
                 defaultParam = 360f
             }
 
+            addLabaOperator {
+                symbol = "s"
+                animator = {
+                    view, param, duration ->
+                    val originalScale: Pair<Float, Float> by lazy { Pair(view.scaleX, view.scaleY) }
+                    val animator = ValueAnimator.ofFloat(0f, 1f)
+                    animator.duration = (duration ?: defaultDuration * 1000).toLong()
+                    animator.interpolator = OvershootInterpolator()
+                    animator.addUpdateListener {
+                        animation ->
+                        view.scaleX = originalScale.first + (param ?: defaultParam) * animation.animatedValue as Float
+                        view.scaleY = originalScale.second + (param ?: defaultParam) * animation.animatedValue as Float
+                    }
+                    animator
+                }
+                description = {
+                    _, param ->
+                    "Its going to move the target $param units down"
+                }
+                defaultDuration = 0.75f
+                defaultParam = 1f
+            }
+
         }
 
         fun addLabaOperator(initialize: LabaOperator.() -> Unit) {
