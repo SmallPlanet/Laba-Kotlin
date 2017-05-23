@@ -31,7 +31,7 @@ class LabaNotation(val notation: String, val view: View) {
     private fun processNotation(index: Int = 0): Pair<AnimatorSet, Int> {
         var duration: Float? = null
         var delay: Float? = null
-        var interpolator: TimeInterpolator = LinearInterpolator()
+        var interpolator: TimeInterpolator? = null
 
         var animatorSet = AnimatorSet()
         val animators = mutableListOf<Animator?>()
@@ -48,7 +48,8 @@ class LabaNotation(val notation: String, val view: View) {
         val commitTempAnimators = {
             animatorSet.playTogether(animators)
 
-            animatorSet.interpolator = interpolator
+            if (interpolator != null)
+                animatorSet.interpolator = interpolator
             if (duration != null)
                 animatorSet.duration = (duration!! * 1000).toLong()
             if (delay != null)
@@ -61,7 +62,7 @@ class LabaNotation(val notation: String, val view: View) {
             animatorSet = AnimatorSet()
             duration = null
             delay = null
-            interpolator = LinearInterpolator()
+            interpolator = null
 
             animators.clear()
         }
