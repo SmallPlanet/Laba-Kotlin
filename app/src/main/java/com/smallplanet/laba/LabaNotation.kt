@@ -2,9 +2,13 @@ package com.smallplanet.laba
 
 import android.animation.Animator
 import android.animation.AnimatorSet
+import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
+import android.support.v4.view.animation.FastOutLinearInInterpolator
+import android.support.v4.view.animation.FastOutSlowInInterpolator
+import android.support.v4.view.animation.LinearOutSlowInInterpolator
 import android.view.View
-import android.view.animation.OvershootInterpolator
+import android.view.animation.*
 
 
 /**
@@ -27,6 +31,7 @@ class LabaNotation(val notation: String, val view: View) {
     private fun processNotation(index: Int = 0): Pair<AnimatorSet, Int> {
         var duration: Float? = null
         var delay: Float? = null
+        var interpolator: TimeInterpolator = LinearInterpolator()
 
         var animatorSet = AnimatorSet()
         val animators = mutableListOf<Animator?>()
@@ -43,9 +48,9 @@ class LabaNotation(val notation: String, val view: View) {
         val commitTempAnimators = {
             animatorSet.playTogether(animators)
 
+            animatorSet.interpolator = interpolator
             if (duration != null)
                 animatorSet.duration = (duration!! * 1000).toLong()
-
             if (delay != null)
                 animatorSet.startDelay = (delay!! * 1000).toLong()
 
@@ -54,6 +59,10 @@ class LabaNotation(val notation: String, val view: View) {
 
         val clearTempAnimators = {
             animatorSet = AnimatorSet()
+            duration = null
+            delay = null
+            interpolator = LinearInterpolator()
+
             animators.clear()
         }
 
@@ -86,15 +95,20 @@ class LabaNotation(val notation: String, val view: View) {
                 animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, null))
             }
 
-            if(char == 'D' || char == 'd') {
+            if(char == 'D' || char == 'd' || char == 'e') {
                 val (paramResult, newIndex) = getParameter(i)
                 val param = paramResult
                 i = newIndex
 
-                if(param != null && char == 'd')
-                    duration = param
-                else if(param != null)
-                    delay = param
+                if (param != null) {
+
+                    when (char) {
+                        'd' -> duration = param
+                        'D' -> delay = param
+                        'e' -> interpolator = LabaNotation.getInterpolator(param.toInt())
+                    }
+
+                }
             }
 
             i++
@@ -143,6 +157,18 @@ class LabaNotation(val notation: String, val view: View) {
     }
 
     companion object {
+        val interpolators = arrayOf(LinearInterpolator(),                   //0
+                                    AccelerateDecelerateInterpolator(),     //1
+                                    AccelerateInterpolator(),               //2
+                                    AnticipateInterpolator(),               //3
+                                    AnticipateOvershootInterpolator(),      //4
+                                    BounceInterpolator(),                   //5
+                                    DecelerateInterpolator(),               //6
+                                    FastOutLinearInInterpolator(),          //7
+                                    FastOutSlowInInterpolator(),            //8
+                                    LinearOutSlowInInterpolator(),          //9
+                                    OvershootInterpolator())                //10
+
         val controlOperators = arrayOf('|', '[', ']')
         val operators = mutableMapOf<String,LabaOperator>()
 
@@ -154,7 +180,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalPositon: Float by lazy { view.x }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.x = originalPositon - (param ?: defaultParam).toPx * animation.animatedValue as Float
@@ -176,7 +201,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalPositon: Float by lazy { view.x }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.x = originalPositon + (param ?: defaultParam).toPx * animation.animatedValue as Float
@@ -198,7 +222,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalPositon: Float by lazy { view.y }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.y = originalPositon - (param ?: defaultParam).toPx * animation.animatedValue as Float
@@ -220,7 +243,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalPositon: Float by lazy { view.y }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.y = originalPositon + (param ?: defaultParam).toPx * animation.animatedValue as Float
@@ -242,7 +264,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalAlpha: Float by lazy { view.alpha }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.alpha = originalAlpha - (param ?: defaultParam) * animation.animatedValue as Float
@@ -264,7 +285,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalRotation: Float by lazy { view.rotation }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.rotation = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
@@ -286,7 +306,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalRotation: Float by lazy { view.rotationX }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.rotationX = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
@@ -308,7 +327,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalRotation: Float by lazy { view.rotationY }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.rotationY = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
@@ -330,7 +348,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalScale: Pair<Float, Float> by lazy { Pair(view.scaleX, view.scaleY) }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
                         view.scaleX = originalScale.first + (param ?: defaultParam) * animation.animatedValue as Float
@@ -357,6 +374,8 @@ class LabaNotation(val notation: String, val view: View) {
             }
 
         }
+
+        fun getInterpolator(param: Int) = interpolators[param]
     }
 }
 
