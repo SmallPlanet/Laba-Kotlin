@@ -24,4 +24,12 @@
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="100dp" />
 
+    <View
+        android:id="@+id/targetYellow"
+        android:background="@color/colorSecondary"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

@@ -25,6 +25,9 @@ class LabaNotation(val notation: String, val view: View) {
     }
 
     private fun processNotation(index: Int = 0): Pair<AnimatorSet, Int> {
+        var duration: Float? = null
+        var delay: Float? = null
+
         var animatorSet = AnimatorSet()
         val animators = mutableListOf<Animator?>()
         val tempAnimators = mutableListOf<AnimatorSet>()
@@ -39,6 +42,13 @@ class LabaNotation(val notation: String, val view: View) {
 
         val commitTempAnimators = {
             animatorSet.playTogether(animators)
+
+            if (duration != null)
+                animatorSet.duration = (duration * 1000).toLong()
+
+            if (delay != null)
+                animatorSet.startDelay = (delay * 1000).toLong()
+
             tempAnimators.add(animatorSet)
         }
 
@@ -67,8 +77,14 @@ class LabaNotation(val notation: String, val view: View) {
                 break
             }
 
-            if(LabaNotation.operators.containsKey(char.toString()))
-                animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, null, null))
+            if(LabaNotation.operators.containsKey(char.toString())) {
+
+                val (paramResult, newIndex) = getParameter(i)
+                val param = paramResult
+                i = newIndex
+
+                animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, null))
+            }
 
             i++
         }
@@ -81,11 +97,42 @@ class LabaNotation(val notation: String, val view: View) {
         return sendAnimators(tempAnimators, i)
     }
 
+    private fun getParameter(index: Int): Pair<Float?, Int> {
+        var i = index
+        val nextChar: Char? = if (i + 1 < notation.length) notation[i + 1] else null
+        var param: Float? = null
+
+        if (nextChar != null && !operators.containsKey(nextChar.toString()) && !controlOperators.contains(nextChar)) {
+            val (paramResult, newIndex) = parseParam(i + 1)
+            param = paramResult
+            i = newIndex - 1
+        }
+        return Pair(param, i)
+    }
+
+    private fun parseParam(index: Int): Pair<Float?, Int> {
+        var i = index
+
+        while (i < notation.length) {
+            val char = notation[i]
+
+            if(!char.isDigit() && char != '.')
+                break
+
+            i++
+        }
+
+        val result = notation.substring(index, i).toFloatOrNull()
+
+        return Pair(result, if(result == null) index else i)
+    }
+
     fun animate() {
         masterAnimatorSet.start()
     }
 
     companion object {
+        val controlOperators = arrayOf('|', '[', ']')
         val operators = mutableMapOf<String,LabaOperator>()
 
         init {
@@ -99,7 +146,7 @@ class LabaNotation(val notation: String, val view: View) {
                     animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
-                        view.x = originalPositon - (param ?: defaultParam) * animation.animatedValue as Float
+                        view.x = originalPositon - (param ?: defaultParam).toPx * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -108,7 +155,7 @@ class LabaNotation(val notation: String, val view: View) {
                     "Its going to move the target $param units to the left"
                 }
                 defaultDuration = 0.75f
-                defaultParam = 500f
+                defaultParam = 100f
             }
 
             addLabaOperator {
@@ -121,7 +168,7 @@ class LabaNotation(val notation: String, val view: View) {
                     animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
-                        view.x = originalPositon + (param ?: defaultParam) * animation.animatedValue as Float
+                        view.x = originalPositon + (param ?: defaultParam).toPx * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -130,7 +177,7 @@ class LabaNotation(val notation: String, val view: View) {
                     "Its going to move the target $param units to the right"
                 }
                 defaultDuration = 0.75f
-                defaultParam = 500f
+                defaultParam = 100f
             }
 
             addLabaOperator {
@@ -143,7 +190,7 @@ class LabaNotation(val notation: String, val view: View) {
                     animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
-                        view.y = originalPositon - (param ?: defaultParam) * animation.animatedValue as Float
+                        view.y = originalPositon - (param ?: defaultParam).toPx * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -152,7 +199,7 @@ class LabaNotation(val notation: String, val view: View) {
                     "Its going to move the target $param units up"
                 }
                 defaultDuration = 0.75f
-                defaultParam = 500f
+                defaultParam = 100f
             }
 
             addLabaOperator {
@@ -165,7 +212,7 @@ class LabaNotation(val notation: String, val view: View) {
                     animator.interpolator = OvershootInterpolator()
                     animator.addUpdateListener {
                         animation ->
-                        view.y = originalPositon + (param ?: defaultParam) * animation.animatedValue as Float
+                        view.y = originalPositon + (param ?: defaultParam).toPx * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -174,7 +221,7 @@ class LabaNotation(val notation: String, val view: View) {
                     "Its going to move the target $param units down"
                 }
                 defaultDuration = 0.75f
-                defaultParam = 500f
+                defaultParam = 100f
             }
 
             addLabaOperator {

@@ -18,8 +18,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startAnimations() {
-        targetPink.laba("vp|>y|[^|r|r|r|r][<]|rfs")
+        targetPink.laba("vp|>y|[^|r90|r90|r90|r90][<]|rfs")
 
-        targetBlue.laba("^p|<y|vp|>y|frs")
+        targetBlue.laba("^200p180|<200y180|v200p180|>200y180|f0.5r490s4")
+
+        targetYellow.laba("r90.5v100")
     }
 }
