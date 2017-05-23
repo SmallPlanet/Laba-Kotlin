@@ -267,16 +267,16 @@ class LabaNotation(val notation: String, val view: View) {
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.alpha = originalAlpha - (param ?: defaultParam) * animation.animatedValue as Float
+                        view.alpha = originalAlpha - (1 - (param ?: defaultParam)) * animation.animatedValue as Float
                     }
                     animator
                 }
                 description = {
                     _, param ->
-                    "Its going to move the target $param units down"
+                    "Its going to move the target ${1 - param} units down"
                 }
                 defaultDuration = 0.75f
-                defaultParam = 1f
+                defaultParam = 0f
             }
 
             addLabaOperator {
