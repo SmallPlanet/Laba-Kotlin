@@ -18,20 +18,28 @@ fun View.laba(notation: String) {
 
 class LabaNotation(val notation: String, val view: View) {
 
-    val masterAnimatorSet = AnimatorSet()
-    val animators = mutableListOf<AnimatorSet>()
+    var masterAnimatorSet = AnimatorSet()
 
     init {
-        processNotation()
+        masterAnimatorSet = processNotation().first
     }
 
-    private fun processNotation() {
+    private fun processNotation(index: Int = 0): Pair<AnimatorSet, Int> {
         var animatorSet = AnimatorSet()
         val animators = mutableListOf<Animator?>()
+        val tempAnimators = mutableListOf<AnimatorSet>()
 
-        val sendAnimators = {
+        val sendAnimators: (List<AnimatorSet>, Int) -> Pair<AnimatorSet, Int> = {
+            animators, index ->
+
+            val resultAnimatorSet = AnimatorSet()
+            resultAnimatorSet.playSequentially(animators)
+            Pair(resultAnimatorSet, index)
+        }
+
+        val commitTempAnimators = {
             animatorSet.playTogether(animators)
-            addToSequence(animatorSet)
+            tempAnimators.add(animatorSet)
         }
 
         val clearTempAnimators = {
@@ -39,25 +47,41 @@ class LabaNotation(val notation: String, val view: View) {
             animators.clear()
         }
 
-        for (char in notation) {
+        var i = index
+
+        while (i < notation.length) {
+            val char = notation[i]
 
             if (char == '|') {
-                sendAnimators()
+                commitTempAnimators()
                 clearTempAnimators()
             }
 
-            animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, null, null))
+            if (char == '[') {
+                val (concurrentAnimator, newIndex) = processNotation(i + 1)
+                animators.add(concurrentAnimator)
+                i = newIndex
+            }
+
+            if (char == ']') {
+                break
+            }
+
+            if(LabaNotation.operators.containsKey(char.toString()))
+                animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, null, null))
+
+            i++
         }
 
-        sendAnimators()
-    }
+        if (!animators.isEmpty()) {
+            commitTempAnimators()
+            clearTempAnimators()
+        }
 
-    private fun addToSequence(animatorSet: AnimatorSet) {
-        animators.add(animatorSet)
+        return sendAnimators(tempAnimators, i)
     }
 
     fun animate() {
-        masterAnimatorSet.playSequentially(animators as List<Animator>?)
         masterAnimatorSet.start()
     }
 

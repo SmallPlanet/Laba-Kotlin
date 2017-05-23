@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startAnimations() {
-        targetPink.laba("vp|>y|^p|<y|frs")
+        targetPink.laba("vp|>y|[^|r|r|r|r][<]|rfs")
 
         targetBlue.laba("^p|<y|vp|>y|frs")
     }
