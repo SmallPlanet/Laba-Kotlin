@@ -18,10 +18,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startAnimations() {
-        targetPink.laba("vp|>y|[^|r90|r90|r90|r90][<]|rfs")
+//        targetPink.laba("vpe10|>e10y|[^e10|r90e10d0.5|r90|r90|r90e10d0.5][<]|rfs")
+//
+//        targetBlue.laba("^200p180d1|<200d1y180|v200p180d2|>200y180|f0r490s4")
+//
+//        targetYellow.laba("^200p180d1D2|<200d1y180|v200p180d2|>200y180|f0r720s1")
 
-        targetBlue.laba("^200p180d5|<200d5y180|v200p180d5|>200y180|f0.5r490s4")
-
-        targetYellow.laba("r90.5D5v100d0.25")
+        //targetYellow.laba("!r180e10")
+        targetYellow.laba("f0.5|f0")
+        targetPink.laba("f0.5|f0")
+        targetBlue.laba("s2|s")
     }
 }
