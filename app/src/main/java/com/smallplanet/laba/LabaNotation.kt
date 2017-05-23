@@ -368,12 +368,15 @@ class LabaNotation(val notation: String, val view: View) {
                     val localParam = if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)
 
                     val originalScale: Pair<Float, Float> by lazy { Pair(view.scaleX, view.scaleY) }
+                    val toScaleX: Float by lazy { originalScale.first - localParam }
+                    val toScaleY: Float by lazy { originalScale.second - localParam }
+
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.scaleX = originalScale.first + localParam * animation.animatedValue as Float
-                        view.scaleY = originalScale.second + localParam * animation.animatedValue as Float
+                        view.scaleX = originalScale.first - toScaleX * animation.animatedValue as Float
+                        view.scaleY = originalScale.second - toScaleY * animation.animatedValue as Float
                     }
                     animator
                 }
