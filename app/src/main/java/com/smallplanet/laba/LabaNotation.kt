@@ -32,6 +32,7 @@ class LabaNotation(val notation: String, val view: View) {
         var duration: Float? = null
         var delay: Float? = null
         var interpolator: TimeInterpolator? = null
+        var invert = false
 
         var animatorSet = AnimatorSet()
         val animators = mutableListOf<Animator?>()
@@ -63,6 +64,7 @@ class LabaNotation(val notation: String, val view: View) {
             duration = null
             delay = null
             interpolator = null
+            invert = false
 
             animators.clear()
         }
@@ -93,7 +95,7 @@ class LabaNotation(val notation: String, val view: View) {
                 val param = paramResult
                 i = newIndex
 
-                animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, null))
+                animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, null, invert))
             }
 
             if(char == 'D' || char == 'd' || char == 'e') {
@@ -112,6 +114,7 @@ class LabaNotation(val notation: String, val view: View) {
                 }
             }
 
+            invert = char == '!'
             i++
         }
 
@@ -177,13 +180,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "<"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = (if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)).toPx
+
                     val originalPositon: Float by lazy { view.x }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.x = originalPositon - (param ?: defaultParam).toPx * animation.animatedValue as Float
+                        view.x = originalPositon - localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -198,13 +203,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = ">"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = (if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)).toPx
+
                     val originalPositon: Float by lazy { view.x }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.x = originalPositon + (param ?: defaultParam).toPx * animation.animatedValue as Float
+                        view.x = originalPositon + localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -219,13 +226,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "^"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = (if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)).toPx
+
                     val originalPositon: Float by lazy { view.y }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.y = originalPositon - (param ?: defaultParam).toPx * animation.animatedValue as Float
+                        view.y = originalPositon - localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -240,13 +249,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "v"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = (if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)).toPx
+
                     val originalPositon: Float by lazy { view.y }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.y = originalPositon + (param ?: defaultParam).toPx * animation.animatedValue as Float
+                        view.y = originalPositon + localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -261,13 +272,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "f"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = 1 - if (invert) ((param ?: defaultParam) + 1) else (param ?: defaultParam)
+
                     val originalAlpha: Float by lazy { view.alpha }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.alpha = originalAlpha - (1 - (param ?: defaultParam)) * animation.animatedValue as Float
+                        view.alpha = originalAlpha - localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -282,13 +295,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "r"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)
+
                     val originalRotation: Float by lazy { view.rotation }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.rotation = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
+                        view.rotation = originalRotation - localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -303,13 +318,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "p"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)
+
                     val originalRotation: Float by lazy { view.rotationX }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.rotationX = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
+                        view.rotationX = originalRotation - localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -324,13 +341,15 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "y"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)
+
                     val originalRotation: Float by lazy { view.rotationY }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.rotationY = originalRotation - (param ?: defaultParam) * animation.animatedValue as Float
+                        view.rotationY = originalRotation - localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -345,14 +364,16 @@ class LabaNotation(val notation: String, val view: View) {
             addLabaOperator {
                 symbol = "s"
                 animator = {
-                    view, param, duration ->
+                    view, param, duration, invert ->
+                    val localParam = if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)
+
                     val originalScale: Pair<Float, Float> by lazy { Pair(view.scaleX, view.scaleY) }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
                     animator.addUpdateListener {
                         animation ->
-                        view.scaleX = originalScale.first + (param ?: defaultParam) * animation.animatedValue as Float
-                        view.scaleY = originalScale.second + (param ?: defaultParam) * animation.animatedValue as Float
+                        view.scaleX = originalScale.first + localParam * animation.animatedValue as Float
+                        view.scaleY = originalScale.second + localParam * animation.animatedValue as Float
                     }
                     animator
                 }
@@ -380,4 +401,4 @@ class LabaNotation(val notation: String, val view: View) {
     }
 }
 
-class LabaOperator(var symbol: String? = null, var defaultDuration: Float = 0.75f, var defaultParam: Float = 0f, var animator: ((View, Float?, Float?) -> Animator)? = null, var description: ((View, Float) -> String)? = null)
+class LabaOperator(var symbol: String? = null, var defaultDuration: Float = 0.75f, var defaultParam: Float = 0f, var animator: ((View, Float?, Float?, Boolean) -> Animator)? = null, var description: ((View, Float) -> String)? = null)
