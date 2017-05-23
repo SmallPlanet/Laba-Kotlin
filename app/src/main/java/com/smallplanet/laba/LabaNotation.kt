@@ -44,10 +44,10 @@ class LabaNotation(val notation: String, val view: View) {
             animatorSet.playTogether(animators)
 
             if (duration != null)
-                animatorSet.duration = (duration * 1000).toLong()
+                animatorSet.duration = (duration!! * 1000).toLong()
 
             if (delay != null)
-                animatorSet.startDelay = (delay * 1000).toLong()
+                animatorSet.startDelay = (delay!! * 1000).toLong()
 
             tempAnimators.add(animatorSet)
         }
@@ -84,6 +84,17 @@ class LabaNotation(val notation: String, val view: View) {
                 i = newIndex
 
                 animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, null))
+            }
+
+            if(char == 'D' || char == 'd') {
+                val (paramResult, newIndex) = getParameter(i)
+                val param = paramResult
+                i = newIndex
+
+                if(param != null && char == 'd')
+                    duration = param
+                else if(param != null)
+                    delay = param
             }
 
             i++
