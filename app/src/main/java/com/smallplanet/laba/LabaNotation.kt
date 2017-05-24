@@ -31,6 +31,7 @@ class LabaNotation(val notation: String, val view: View) {
     private fun processNotation(index: Int = 0): Pair<AnimatorSet, Int> {
         var duration: Float? = null
         var delay: Float? = null
+        var absoluteLoop: Int? = null
         var interpolator: TimeInterpolator? = null
         var invert = false
 
@@ -47,6 +48,19 @@ class LabaNotation(val notation: String, val view: View) {
         }
 
         val commitTempAnimators = {
+
+            if(absoluteLoop != null) {
+                absoluteLoop = if (absoluteLoop == 0 || absoluteLoop == -1) absoluteLoop else (Math.abs(absoluteLoop!!) - 1)
+                animators
+                        .filterIsInstance<ValueAnimator>()
+                        .forEach {
+                            if(absoluteLoop != -1)
+                                it.repeatCount = absoluteLoop!!
+                            else
+                                it.repeatCount = ValueAnimator.INFINITE
+                        }
+            }
+
             animatorSet.playTogether(animators)
 
             if (interpolator != null)
@@ -64,6 +78,7 @@ class LabaNotation(val notation: String, val view: View) {
             duration = null
             delay = null
             interpolator = null
+            absoluteLoop = null
             invert = false
 
             animators.clear()
@@ -98,7 +113,7 @@ class LabaNotation(val notation: String, val view: View) {
                 animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, null, invert))
             }
 
-            if(char == 'D' || char == 'd' || char == 'e') {
+            if(char == 'D' || char == 'd' || char == 'e' || char == 'L') {
                 val (paramResult, newIndex) = getParameter(i)
                 val param = paramResult
                 i = newIndex
@@ -109,6 +124,7 @@ class LabaNotation(val notation: String, val view: View) {
                         'd' -> duration = param
                         'D' -> delay = param
                         'e' -> interpolator = LabaNotation.getInterpolator(param.toInt())
+                        'L' -> absoluteLoop = param.toInt()
                     }
 
                 }
@@ -301,6 +317,8 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalRotation: Float by lazy { view.rotation }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
+                    animator.repeatCount = 3
+
                     animator.addUpdateListener {
                         animation ->
                         view.rotation = originalRotation - localParam * animation.animatedValue as Float
