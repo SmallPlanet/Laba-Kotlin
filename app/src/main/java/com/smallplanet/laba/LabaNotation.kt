@@ -55,7 +55,7 @@ class LabaNotation(val notation: String, val view: View) {
                         .filterIsInstance<ValueAnimator>()
                         .forEach {
                             if(absoluteLoop != -1)
-                                it.repeatCount = absoluteLoop!!
+                                it.repeatCount = if (absoluteLoop != 0) absoluteLoop!! else (absoluteLoop!! - 1)
                             else
                                 it.repeatCount = ValueAnimator.INFINITE
                         }
