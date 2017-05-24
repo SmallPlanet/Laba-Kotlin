@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
 //        targetYellow.laba("^200p180d1D2|<200d1y180|v200p180d2|>200y180|f0r720s1")
 
         //targetYellow.laba("!r180e10")
-        targetYellow.laba("f0.5|f0")
-        targetPink.laba("f0.5|f0")
-        targetBlue.laba("s2|s")
+//        targetYellow.laba("f0.5|f0")
+        //targetPink.laba("f0.5|f0")
+        targetBlue.laba("s3|!s2|s0.5|s")
     }
 }

@@ -145,7 +145,7 @@ class LabaNotation(val notation: String, val view: View) {
         while (i < notation.length) {
             val char = notation[i]
 
-            if(!char.isDigit() && char != '.')
+            if(!char.isDigit() && char != '.' && char != '-')
                 break
 
             i++
@@ -365,7 +365,7 @@ class LabaNotation(val notation: String, val view: View) {
                 symbol = "s"
                 animator = {
                     view, param, duration, invert ->
-                    val localParam = if (invert) -1 * (param ?: defaultParam) else (param ?: defaultParam)
+                    val localParam = if (invert) 1 / (param ?: defaultParam) else (param ?: defaultParam)
 
                     val originalScale: Pair<Float, Float> by lazy { Pair(view.scaleX, view.scaleY) }
                     val toScaleX: Float by lazy { originalScale.first - localParam }
@@ -390,7 +390,7 @@ class LabaNotation(val notation: String, val view: View) {
 
         }
 
-        fun addLabaOperator(initialize: LabaOperator.() -> Unit) {
+        inline fun addLabaOperator(initialize: LabaOperator.() -> Unit) {
             val newLabaOperator = LabaOperator()
             newLabaOperator.initialize()
 
