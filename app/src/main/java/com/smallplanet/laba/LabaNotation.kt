@@ -32,6 +32,7 @@ class LabaNotation(val notation: String, val view: View) {
         var duration: Float? = null
         var delay: Float? = null
         var absoluteLoop: Int? = null
+        var relativeLoop: Int? = null
         var interpolator: TimeInterpolator? = null
         var invert = false
 
@@ -49,15 +50,17 @@ class LabaNotation(val notation: String, val view: View) {
 
         val commitTempAnimators = {
 
-            if(absoluteLoop != null) {
-                absoluteLoop = if (absoluteLoop == 0 || absoluteLoop == -1) absoluteLoop else (Math.abs(absoluteLoop!!) - 1)
+            if(absoluteLoop != null || relativeLoop != null) {
+                var loop = if (absoluteLoop != null) absoluteLoop else relativeLoop
                 animators
                         .filterIsInstance<ValueAnimator>()
                         .forEach {
-                            if(absoluteLoop != -1)
-                                it.repeatCount = if (absoluteLoop != 0) absoluteLoop!! else (absoluteLoop!! - 1)
+                            if(loop != -1)
+                                it.repeatCount = if (loop != 0) (loop!! - 1) else loop
                             else
                                 it.repeatCount = ValueAnimator.INFINITE
+
+                            it.repeatMode = if (absoluteLoop != null) ValueAnimator.RESTART else ValueAnimator.REVERSE
                         }
             }
 
@@ -113,7 +116,7 @@ class LabaNotation(val notation: String, val view: View) {
                 animators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, null, invert))
             }
 
-            if(char == 'D' || char == 'd' || char == 'e' || char == 'L') {
+            if(char == 'D' || char == 'd' || char == 'e' || char == 'L' || char == 'l') {
                 val (paramResult, newIndex) = getParameter(i)
                 val param = paramResult
                 i = newIndex
@@ -125,6 +128,7 @@ class LabaNotation(val notation: String, val view: View) {
                         'D' -> delay = param
                         'e' -> interpolator = LabaNotation.getInterpolator(param.toInt())
                         'L' -> absoluteLoop = param.toInt()
+                        'l' -> relativeLoop = param.toInt()
                     }
 
                 }
