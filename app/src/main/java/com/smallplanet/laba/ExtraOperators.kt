@@ -10,25 +10,26 @@ fun addNewOperators() {
     LabaNotation.addLabaOperator {
         symbol = "c"
         animator = {
-            view, param, duration, invert ->
+            view, param, invert ->
             val localParam = if (invert) 1 / (param ?: defaultParam) else (param ?: defaultParam)
 
             val originalScale: Float by lazy { view.scaleX }
             val toScaleX: Float by lazy { originalScale - localParam }
 
             val animator = ValueAnimator.ofFloat(0f, 1f)
-            animator.duration = (duration ?: defaultDuration * 1000).toLong()
             animator.addUpdateListener {
                 animation ->
                 view.scaleX = originalScale - toScaleX * animation.animatedValue as Float
             }
             animator
         }
-        description = {
-            _, param ->
-            "Its going to move the target $param units down"
+        describe = {
+            sb, _, param, duration, invert ->
+            if(!invert)
+                sb.append("scale x to ${(param ?: defaultParam) * 100}%, ")
+            else
+                sb.append("scale x to ${((1 / (param ?: defaultParam)) * 100).format(1)}%, ")
         }
-        defaultDuration = 0.75f
         defaultParam = 1f
     }
 
@@ -36,25 +37,26 @@ fun addNewOperators() {
     LabaNotation.addLabaOperator {
         symbol = "C"
         animator = {
-            view, param, duration, invert ->
+            view, param, invert ->
             val localParam = if (invert) 1 / (param ?: defaultParam) else (param ?: defaultParam)
 
             val originalScale: Float by lazy { view.scaleY }
             val toScaleY: Float by lazy { originalScale - localParam }
 
             val animator = ValueAnimator.ofFloat(0f, 1f)
-            animator.duration = (duration ?: defaultDuration * 1000).toLong()
             animator.addUpdateListener {
                 animation ->
                 view.scaleY = originalScale - toScaleY * animation.animatedValue as Float
             }
             animator
         }
-        description = {
-            _, param ->
-            "Its going to move the target $param units down"
+        describe = {
+            sb, _, param, duration, invert ->
+            if(!invert)
+                sb.append("scale y to ${(param ?: defaultParam) * 100}%, ")
+            else
+                sb.append("scale y to ${((1 / (param ?: defaultParam)) * 100).format(1)}%, ")
         }
-        defaultDuration = 0.75f
         defaultParam = 1f
     }
 }

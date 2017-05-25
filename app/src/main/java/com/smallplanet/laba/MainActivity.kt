@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startAnimations() {
-        targetPink.laba("^200e10D1d1|c10e1d0.25|C10e1d0.25|D0.5s7f0!p30^100")
+        val labaExpression = "^100e10D1d1|c5e1d0.25|C5e1d0.25|D0.5s3f0!p30^100|^100e10D1d1|c5e1d0.25|C5e1d0.25|D0.5s3f0!p30^100"
+
+        expression.text = labaExpression
+        description.text = targetPink.laba(labaExpression, true)
     }
 }
