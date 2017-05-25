@@ -9,29 +9,6 @@
         android:background="@color/colorAccent"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="100dp" />
-
-    <View
-        android:id="@+id/targetBlue"
-        android:background="@color/colorPrimary"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="100dp" />
-
-    <TextView
-        android:gravity="center"
-        android:text="YO"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        android:id="@+id/targetYellow"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

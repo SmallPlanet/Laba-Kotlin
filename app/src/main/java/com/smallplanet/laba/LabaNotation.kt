@@ -51,7 +51,7 @@ class LabaNotation(val notation: String, val view: View) {
         val commitTempAnimators = {
 
             if(absoluteLoop != null || relativeLoop != null) {
-                var loop = if (absoluteLoop != null) absoluteLoop else relativeLoop
+                val loop = if (absoluteLoop != null) absoluteLoop else relativeLoop
                 animators
                         .filterIsInstance<ValueAnimator>()
                         .forEach {
@@ -182,16 +182,19 @@ class LabaNotation(val notation: String, val view: View) {
 
     companion object {
         val interpolators = arrayOf(LinearInterpolator(),                   //0
-                                    AccelerateDecelerateInterpolator(),     //1
-                                    AccelerateInterpolator(),               //2
-                                    AnticipateInterpolator(),               //3
-                                    AnticipateOvershootInterpolator(),      //4
-                                    BounceInterpolator(),                   //5
-                                    DecelerateInterpolator(),               //6
-                                    FastOutLinearInInterpolator(),          //7
-                                    FastOutSlowInInterpolator(),            //8
-                                    LinearOutSlowInInterpolator(),          //9
-                                    OvershootInterpolator())                //10
+                                    LinearOutSlowInInterpolator(),          //1
+                                    FastOutLinearInInterpolator(),          //2
+                                    FastOutSlowInInterpolator(),            //3
+                                    AccelerateInterpolator(),               //4
+                                    DecelerateInterpolator(),               //5
+                                    AccelerateDecelerateInterpolator(),     //6
+                                    AnticipateInterpolator(),               //7
+                                    OvershootInterpolator(),                //8
+                                    AnticipateOvershootInterpolator(),      //9
+                                    BounceInterpolator()                    //10
+
+                                    )
+
 
         val controlOperators = arrayOf('|', '[', ']')
         val operators = mutableMapOf<String,LabaOperator>()
@@ -321,7 +324,6 @@ class LabaNotation(val notation: String, val view: View) {
                     val originalRotation: Float by lazy { view.rotation }
                     val animator = ValueAnimator.ofFloat(0f, 1f)
                     animator.duration = (duration ?: defaultDuration * 1000).toLong()
-                    animator.repeatCount = 3
 
                     animator.addUpdateListener {
                         animation ->
