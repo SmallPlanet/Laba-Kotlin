@@ -1,5 +1,6 @@
 package com.smallplanet.labalib
 
+import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 
 
@@ -300,7 +301,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
     companion object {
         val defaultDuration: Float = 0.75f
 
-        val interpolators = arrayOf(android.view.animation.LinearInterpolator(),                   //0
+        val interpolators: MutableList<TimeInterpolator> = mutableListOf(android.view.animation.LinearInterpolator(),                   //0
                 android.support.v4.view.animation.LinearOutSlowInInterpolator(),          //1
                 android.support.v4.view.animation.FastOutLinearInInterpolator(),          //2
                 android.support.v4.view.animation.FastOutSlowInInterpolator(),            //3
@@ -554,7 +555,12 @@ class LabaNotation(var notation: String, val view: android.view.View) {
 
         }
 
-        fun getInterpolator(param: Int) = LabaNotation.Companion.interpolators[param]
+        fun addInterpolator(interpolator: TimeInterpolator): Int {
+            interpolators.add(interpolator)
+            return interpolators.size - 1
+        }
+
+        fun getInterpolator(index: Int): TimeInterpolator? = if(index >= interpolators.size) null else LabaNotation.Companion.interpolators[index]
     }
 }
 
