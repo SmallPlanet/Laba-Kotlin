@@ -1,4 +1,4 @@
-package com.smallplanet.labainaction
+package com.smallplanet.labalib
 
 import android.content.res.Resources
 

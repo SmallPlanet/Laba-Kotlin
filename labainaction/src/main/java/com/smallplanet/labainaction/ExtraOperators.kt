@@ -1,6 +1,8 @@
 package com.smallplanet.labainaction
 
 import android.animation.ValueAnimator
+import com.smallplanet.labalib.LabaNotation
+import com.smallplanet.labalib.format
 
 /**
  * Created by javiermoreno on 5/25/17.
