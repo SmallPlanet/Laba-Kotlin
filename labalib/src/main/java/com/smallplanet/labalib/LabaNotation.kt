@@ -19,9 +19,9 @@ fun android.view.View.laba(notation: String, returnDescriptin: Boolean = false, 
     return null
 }
 
-class LabaNotation(var notation: String, val view: android.view.View, val completeAction: ((Animator?) -> Unit)?) {
+class LabaNotation(private var notation: String, private val view: android.view.View, private val completeAction: ((Animator?) -> Unit)?) {
 
-    var masterAnimatorSet = android.animation.AnimatorSet()
+    private var masterAnimatorSet = android.animation.AnimatorSet()
 
     init {
         notation = notation.replace(" ", "")
@@ -37,7 +37,7 @@ class LabaNotation(var notation: String, val view: android.view.View, val comple
         })
     }
 
-    fun describeSegment(segment: String, sb: StringBuilder) {
+    private fun describeSegment(segment: String, sb: StringBuilder) {
         var duration: Float? = null
         var delay: Float? = null
         var absoluteLoop: Int? = null
