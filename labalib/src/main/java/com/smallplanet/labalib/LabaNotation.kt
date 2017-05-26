@@ -1,5 +1,6 @@
 package com.smallplanet.labalib
 
+import android.animation.Animator
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 
@@ -8,8 +9,8 @@ import android.animation.ValueAnimator
  * Created by javiermoreno on 5/18/17.
  */
 
-fun android.view.View.laba(notation: String, returnDescriptin: Boolean = false): String? {
-    val labanotation = LabaNotation(notation, this)
+fun android.view.View.laba(notation: String, returnDescriptin: Boolean = false, completeAction: ((Animator?) -> Unit)? = null): String? {
+    val labanotation = LabaNotation(notation, this, completeAction)
     labanotation.animate()
 
     if (returnDescriptin)
@@ -18,13 +19,22 @@ fun android.view.View.laba(notation: String, returnDescriptin: Boolean = false):
     return null
 }
 
-class LabaNotation(var notation: String, val view: android.view.View) {
+class LabaNotation(var notation: String, val view: android.view.View, val completeAction: ((Animator?) -> Unit)?) {
 
     var masterAnimatorSet = android.animation.AnimatorSet()
 
     init {
         notation = notation.replace(" ", "")
         masterAnimatorSet = processNotation().first
+        masterAnimatorSet.addListener(object: Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {}
+
+            override fun onAnimationEnd(animation: Animator?) = completeAction?.invoke(animation)!!
+
+            override fun onAnimationCancel(animation: Animator?) {}
+
+            override fun onAnimationStart(animation: Animator?) {}
+        })
     }
 
     fun describeSegment(segment: String, sb: StringBuilder) {

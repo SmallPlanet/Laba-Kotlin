@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         val labaExpression = "^100e11D1d1|c5e1d0.25|C5e1d0.25|D0.5s3f0!p30^100"
 
         expression.text = labaExpression
-        description.text = targetPink.laba(labaExpression, true)
+        description.text = targetPink.laba(labaExpression, true, {
+            targetPink.alpha = 1f
+        })
     }
 }
