@@ -1,7 +1,6 @@
 package com.smallplanet.labainaction.extras
 
 import android.animation.ValueAnimator
-import com.smallplanet.labalib.format
 
 /**
  * Created by javiermoreno on 5/25/17.
@@ -25,11 +24,11 @@ fun addNewOperators() {
             animator
         }
         describe = {
-            sb, _, param, duration, invert ->
+            sb, _, param, invert ->
             if (!invert)
                 sb.append("scale x to ${(param ?: defaultParam) * 100}%, ")
             else
-                sb.append("scale x to ${((1 / (param ?: defaultParam)) * 100).format(1)}%, ")
+                sb.append("scale x to ${((1 / (param ?: defaultParam)) * 100)}%, ")
         }
         defaultParam = 1f
     }
@@ -52,11 +51,11 @@ fun addNewOperators() {
             animator
         }
         describe = {
-            sb, _, param, duration, invert ->
+            sb, _, param, invert ->
             if (!invert)
                 sb.append("scale y to ${(param ?: defaultParam) * 100}%, ")
             else
-                sb.append("scale y to ${((1 / (param ?: defaultParam)) * 100).format(1)}%, ")
+                sb.append("scale y to ${((1 / (param ?: defaultParam)) * 100)}%, ")
         }
         defaultParam = 1f
     }

@@ -1,4 +1,4 @@
-package com.smallplanet.labainaction
+package com.smallplanet.labainaction.extras
 
 import android.animation.TimeInterpolator
 import com.smallplanet.labalib.LabaNotation

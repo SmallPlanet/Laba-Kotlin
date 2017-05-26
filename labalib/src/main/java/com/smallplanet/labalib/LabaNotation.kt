@@ -86,7 +86,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 val param = paramResult
                 i = newIndex
 
-                LabaNotation.Companion.operators[char.toString()]?.describe?.invoke(tempBuilder, view, param, null, invert)
+                LabaNotation.Companion.operators[char.toString()]?.describe?.invoke(tempBuilder, view, param, invert)
             }
 
             if(char == 'D' || char == 'd' || char == 'e' || char == 'L' || char == 'l') {
@@ -335,7 +335,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("move left ${param ?: defaultParam} units, ")
                     else
@@ -359,7 +359,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("move right ${param ?: defaultParam} units, ")
                     else
@@ -383,7 +383,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("move up ${param ?: defaultParam} units, ")
                     else
@@ -407,7 +407,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("move down ${param ?: defaultParam} units, ")
                     else
@@ -431,7 +431,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, view, param, _, invert ->
+                    sb, view, param, invert ->
                     val originalAlpha: Float by lazy { view.alpha }
 
                     if (!invert)
@@ -458,7 +458,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("rotate around z by ${param ?: defaultParam}° units, ")
                     else
@@ -482,7 +482,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("rotate around x by ${param ?: defaultParam}° units, ")
                     else
@@ -506,7 +506,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("rotate around y by ${param ?: defaultParam}° units, ")
                     else
@@ -534,7 +534,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     animator
                 }
                 describe = {
-                    sb, _, param, _, invert ->
+                    sb, _, param, invert ->
                     if (!invert)
                         sb.append("scale to ${(param ?: defaultParam) * 100}%, ")
                     else
@@ -564,4 +564,4 @@ class LabaNotation(var notation: String, val view: android.view.View) {
     }
 }
 
-class LabaOperator(var symbol: String? = null, var defaultParam: Float = 0f, var animator: ((android.view.View, Float?, Boolean) -> android.animation.Animator)? = null, var describe: ((StringBuilder, android.view.View, Float?, Float?, Boolean) -> Unit)? = null)
+class LabaOperator(var symbol: String? = null, var defaultParam: Float = 0f, var animator: ((android.view.View, Float?, Boolean) -> android.animation.Animator)? = null, var describe: ((StringBuilder, android.view.View, Float?, Boolean) -> Unit)? = null)
