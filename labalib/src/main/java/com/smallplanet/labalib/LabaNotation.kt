@@ -8,7 +8,7 @@ import android.animation.ValueAnimator
  */
 
 fun android.view.View.laba(notation: String, returnDescriptin: Boolean = false): String? {
-    val labanotation = com.smallplanet.labalib.LabaNotation(notation, this)
+    val labanotation = LabaNotation(notation, this)
     labanotation.animate()
 
     if (returnDescriptin)
@@ -57,7 +57,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 sb.append("$loopType repeating $loopNumber, ")
             }
 
-            sb.append("over ${duration ?: com.smallplanet.labalib.LabaNotation.Companion.defaultDuration} seconds.")
+            sb.append("over ${duration ?: LabaNotation.Companion.defaultDuration} seconds. ")
         }
 
         val clearTempSegment= {
@@ -79,13 +79,13 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 clearTempSegment()
             }
 
-            if(com.smallplanet.labalib.LabaNotation.Companion.operators.containsKey(char.toString())) {
+            if(LabaNotation.Companion.operators.containsKey(char.toString())) {
 
                 val (paramResult, newIndex) = getParameter(i)
                 val param = paramResult
                 i = newIndex
 
-                com.smallplanet.labalib.LabaNotation.Companion.operators[char.toString()]?.describe?.invoke(tempBuilder, view, param, null, invert)
+                LabaNotation.Companion.operators[char.toString()]?.describe?.invoke(tempBuilder, view, param, null, invert)
             }
 
             if(char == 'D' || char == 'd' || char == 'e' || char == 'L' || char == 'l') {
@@ -98,7 +98,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     when (char) {
                         'd' -> duration = param
                         'D' -> delay = param
-                        'e' -> interpolator = com.smallplanet.labalib.LabaNotation.Companion.getInterpolator(param.toInt())
+                        'e' -> interpolator = LabaNotation.Companion.getInterpolator(param.toInt())
                         'L' -> absoluteLoop = param.toInt()
                         'l' -> relativeLoop = param.toInt()
                     }
@@ -141,11 +141,11 @@ class LabaNotation(var notation: String, val view: android.view.View) {
             describeSegment (notationToDescribe, sb)
         }
 
-        return sb.toString().replace("  ", " ").capitalize()
+        return sb.toString().replace("  ", " ").capitalizeSentences()
     }
 
     private fun processNotation(index: Int = 0): Pair<android.animation.AnimatorSet, Int> {
-        var duration: Float = com.smallplanet.labalib.LabaNotation.Companion.defaultDuration
+        var duration: Float = LabaNotation.Companion.defaultDuration
         var delay: Float? = null
         var absoluteLoop: Int? = null
         var relativeLoop: Int? = null
@@ -195,7 +195,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
 
         val clearTempAnimators = {
             animatorSet = android.animation.AnimatorSet()
-            duration = com.smallplanet.labalib.LabaNotation.Companion.defaultDuration
+            duration = LabaNotation.Companion.defaultDuration
             delay = null
             interpolator = null
             absoluteLoop = null
@@ -224,13 +224,13 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 break
             }
 
-            if(com.smallplanet.labalib.LabaNotation.Companion.operators.containsKey(char.toString())) {
+            if(LabaNotation.Companion.operators.containsKey(char.toString())) {
 
                 val (paramResult, newIndex) = getParameter(i)
                 val param = paramResult
                 i = newIndex
 
-                animators.add(com.smallplanet.labalib.LabaNotation.Companion.operators[char.toString()]?.animator?.invoke(view, param, invert))
+                animators.add(LabaNotation.Companion.operators[char.toString()]?.animator?.invoke(view, param, invert))
             }
 
             if(char == 'D' || char == 'd' || char == 'e' || char == 'L' || char == 'l') {
@@ -243,7 +243,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                     when (char) {
                         'd' -> duration = param
                         'D' -> delay = param
-                        'e' -> interpolator = com.smallplanet.labalib.LabaNotation.Companion.getInterpolator(param.toInt())
+                        'e' -> interpolator = LabaNotation.Companion.getInterpolator(param.toInt())
                         'L' -> absoluteLoop = param.toInt()
                         'l' -> relativeLoop = param.toInt()
                     }
@@ -268,7 +268,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
         val nextChar: Char? = if (i + 1 < notation.length) notation[i + 1] else null
         var param: Float? = null
 
-        if (nextChar != null && !com.smallplanet.labalib.LabaNotation.Companion.operators.containsKey(nextChar.toString()) && !com.smallplanet.labalib.LabaNotation.Companion.controlOperators.contains(nextChar)) {
+        if (nextChar != null && !LabaNotation.Companion.operators.containsKey(nextChar.toString()) && !LabaNotation.Companion.controlOperators.contains(nextChar)) {
             val (paramResult, newIndex) = parseParam(i + 1)
             param = paramResult
             i = newIndex - 1
@@ -316,10 +316,10 @@ class LabaNotation(var notation: String, val view: android.view.View) {
 
 
         val controlOperators = arrayOf('|', '[', ']')
-        val operators = mutableMapOf<String, com.smallplanet.labalib.LabaOperator>()
+        val operators = mutableMapOf<String, LabaOperator>()
 
         init {
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "<"
                 animator = {
                     view, param, invert ->
@@ -343,7 +343,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 100f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = ">"
                 animator = {
                     view, param, invert ->
@@ -367,7 +367,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 100f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "^"
                 animator = {
                     view, param, invert ->
@@ -391,7 +391,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 100f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "v"
                 animator = {
                     view, param, invert ->
@@ -415,7 +415,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 100f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "f"
                 animator = {
                     view, param, invert ->
@@ -441,7 +441,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 0f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "r"
                 animator = {
                     view, param, invert ->
@@ -466,7 +466,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 360f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "p"
                 animator = {
                     view, param, invert ->
@@ -490,7 +490,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 360f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "y"
                 animator = {
                     view, param, invert ->
@@ -514,7 +514,7 @@ class LabaNotation(var notation: String, val view: android.view.View) {
                 defaultParam = 360f
             }
 
-            com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+            LabaNotation.Companion.addLabaOperator {
                 symbol = "s"
                 animator = {
                     view, param, invert ->
@@ -544,17 +544,17 @@ class LabaNotation(var notation: String, val view: android.view.View) {
 
         }
 
-        inline fun addLabaOperator(initialize: com.smallplanet.labalib.LabaOperator.() -> Unit) {
-            val newLabaOperator = com.smallplanet.labalib.LabaOperator()
+        inline fun addLabaOperator(initialize: LabaOperator.() -> Unit) {
+            val newLabaOperator = LabaOperator()
             newLabaOperator.initialize()
 
             newLabaOperator.symbol?.let {
-                com.smallplanet.labalib.LabaNotation.Companion.operators[it] = newLabaOperator
+                LabaNotation.Companion.operators[it] = newLabaOperator
             }
 
         }
 
-        fun getInterpolator(param: Int) = com.smallplanet.labalib.LabaNotation.Companion.interpolators[param]
+        fun getInterpolator(param: Int) = LabaNotation.Companion.interpolators[param]
     }
 }
 
