@@ -1,7 +1,6 @@
-package com.smallplanet.labainaction
+package com.smallplanet.labainaction.extras
 
 import android.animation.ValueAnimator
-import com.smallplanet.labalib.LabaNotation
 import com.smallplanet.labalib.format
 
 /**
@@ -9,7 +8,7 @@ import com.smallplanet.labalib.format
  */
 
 fun addNewOperators() {
-    LabaNotation.addLabaOperator {
+    com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
         symbol = "c"
         animator = {
             view, param, invert ->
@@ -27,7 +26,7 @@ fun addNewOperators() {
         }
         describe = {
             sb, _, param, duration, invert ->
-            if(!invert)
+            if (!invert)
                 sb.append("scale x to ${(param ?: defaultParam) * 100}%, ")
             else
                 sb.append("scale x to ${((1 / (param ?: defaultParam)) * 100).format(1)}%, ")
@@ -36,7 +35,7 @@ fun addNewOperators() {
     }
 
 
-    LabaNotation.addLabaOperator {
+    com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
         symbol = "C"
         animator = {
             view, param, invert ->
@@ -54,7 +53,7 @@ fun addNewOperators() {
         }
         describe = {
             sb, _, param, duration, invert ->
-            if(!invert)
+            if (!invert)
                 sb.append("scale y to ${(param ?: defaultParam) * 100}%, ")
             else
                 sb.append("scale y to ${((1 / (param ?: defaultParam)) * 100).format(1)}%, ")
