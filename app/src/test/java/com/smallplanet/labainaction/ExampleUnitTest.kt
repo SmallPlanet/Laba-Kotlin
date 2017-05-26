@@ -1,4 +1,4 @@
-package com.smallplanet.laba
+package com.smallplanet.labainaction
 
 import org.junit.Test
 

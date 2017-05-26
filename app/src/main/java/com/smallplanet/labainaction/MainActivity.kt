@@ -1,4 +1,4 @@
-package com.smallplanet.laba
+package com.smallplanet.labainaction
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
