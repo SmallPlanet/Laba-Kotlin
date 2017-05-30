@@ -3,13 +3,26 @@ package com.smallplanet.labalib
 import android.animation.Animator
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
+import android.support.v4.view.animation.FastOutLinearInInterpolator
+import android.support.v4.view.animation.FastOutSlowInInterpolator
+import android.support.v4.view.animation.LinearOutSlowInInterpolator
+import android.view.View
+import android.view.animation.*
 
 
 /**
  * Created by javiermoreno on 5/18/17.
  */
 
-fun android.view.View.laba(notation: String, returnDescriptin: Boolean = false, completeAction: ((Animator?) -> Unit)? = null): String? {
+/**
+ * This extension function provides quick access to the use of the laba notation.
+ *
+ * @param [notation] expression that represents the coreography to be performed by this view.
+ * @param [returnDescriptin] specify if a return value is expected that contains the description of the specified [notation], doing this adds overhead to the processing of the [notation] this was created for debug purposes. Default value is false
+ * @param [completeAction] action to be executed at the end of the animation. Default value is null.
+ * @return a string with the description of the coreography to be performed by the view, this return value is null (not computed) if the [returnDescriptin] parameter is false or not specified.
+ */
+fun View.laba(notation: String, returnDescriptin: Boolean = false, completeAction: ((Animator?) -> Unit)? = null): String? {
     val labanotation = LabaNotation(notation, this, completeAction)
     labanotation.animate()
 
@@ -19,7 +32,7 @@ fun android.view.View.laba(notation: String, returnDescriptin: Boolean = false, 
     return null
 }
 
-class LabaNotation(private var notation: String, private val view: android.view.View, private val completeAction: ((Animator?) -> Unit)?) {
+class LabaNotation(private var notation: String, private val view: View, private val completeAction: ((Animator?) -> Unit)?) {
 
     private var masterAnimatorSet = android.animation.AnimatorSet()
 
@@ -311,17 +324,17 @@ class LabaNotation(private var notation: String, private val view: android.view.
     companion object {
         val defaultDuration: Float = 0.75f
 
-        val interpolators: MutableList<TimeInterpolator> = mutableListOf(android.view.animation.LinearInterpolator(),                   //0
-                android.support.v4.view.animation.LinearOutSlowInInterpolator(),          //1
-                android.support.v4.view.animation.FastOutLinearInInterpolator(),          //2
-                android.support.v4.view.animation.FastOutSlowInInterpolator(),            //3
-                android.view.animation.AccelerateInterpolator(),               //4
-                android.view.animation.DecelerateInterpolator(),               //5
-                android.view.animation.AccelerateDecelerateInterpolator(),     //6
-                android.view.animation.AnticipateInterpolator(),               //7
-                android.view.animation.OvershootInterpolator(),                //8
-                android.view.animation.AnticipateOvershootInterpolator(),      //9
-                android.view.animation.BounceInterpolator()                    //10
+        val interpolators: MutableList<TimeInterpolator> = mutableListOf(LinearInterpolator(),                   //0
+                LinearOutSlowInInterpolator(),          //1
+                FastOutLinearInInterpolator(),          //2
+                FastOutSlowInInterpolator(),            //3
+                AccelerateInterpolator(),               //4
+                DecelerateInterpolator(),               //5
+                AccelerateDecelerateInterpolator(),     //6
+                AnticipateInterpolator(),               //7
+                OvershootInterpolator(),                //8
+                AnticipateOvershootInterpolator(),      //9
+                BounceInterpolator()                    //10
 
         )
 
@@ -574,4 +587,4 @@ class LabaNotation(private var notation: String, private val view: android.view.
     }
 }
 
-class LabaOperator(var symbol: String? = null, var defaultParam: Float = 0f, var animator: ((android.view.View, Float?, Boolean) -> android.animation.Animator)? = null, var describe: ((StringBuilder, android.view.View, Float?, Boolean) -> Unit)? = null)
+class LabaOperator(var symbol: String? = null, var defaultParam: Float = 0f, var animator: ((View, Float?, Boolean) -> android.animation.Animator)? = null, var describe: ((StringBuilder, View, Float?, Boolean) -> Unit)? = null)

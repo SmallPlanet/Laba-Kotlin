@@ -26,8 +26,9 @@ android {
 }
 
 dokka {
-    outputFormat = 'gfm'
+    outputFormat = 'html'
     outputDirectory = "$buildDir/dokkadocs"
+    sourceDirs = files('src/main/java')
 }
 
 dependencies {
