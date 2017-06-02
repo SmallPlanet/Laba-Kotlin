@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Laba.iml" filepath="$PROJECT_DIR$/Laba.iml" />
-      <module fileurl="file://$PROJECT_DIR$/labainaction/app.iml" filepath="$PROJECT_DIR$/labainaction/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/labainaction/labainaction.iml" filepath="$PROJECT_DIR$/labainaction/labainaction.iml" />
       <module fileurl="file://$PROJECT_DIR$/labalib/labalib.iml" filepath="$PROJECT_DIR$/labalib/labalib.iml" />
     </modules>

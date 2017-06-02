@@ -322,9 +322,9 @@ class LabaNotation(private var notation: String, private val view: View, private
     }
 
     companion object {
-        val defaultDuration: Float = 0.75f
+        private val defaultDuration: Float = 0.75f
 
-        val interpolators: MutableList<TimeInterpolator> = mutableListOf(LinearInterpolator(),                   //0
+        private val interpolators: MutableList<TimeInterpolator> = mutableListOf(LinearInterpolator(),                   //0
                 LinearOutSlowInInterpolator(),          //1
                 FastOutLinearInInterpolator(),          //2
                 FastOutSlowInInterpolator(),            //3
@@ -339,8 +339,8 @@ class LabaNotation(private var notation: String, private val view: View, private
         )
 
 
-        val controlOperators = arrayOf('|', '[', ']')
-        val operators = mutableMapOf<String, LabaOperator>()
+        private val controlOperators = arrayOf('|', '[', ']')
+        private val operators = mutableMapOf<String, LabaOperator>()
 
         init {
             LabaNotation.Companion.addLabaOperator {
@@ -568,7 +568,7 @@ class LabaNotation(private var notation: String, private val view: View, private
 
         }
 
-        inline fun addLabaOperator(initialize: LabaOperator.() -> Unit) {
+        fun addLabaOperator(initialize: LabaOperator.() -> Unit) {
             val newLabaOperator = LabaOperator()
             newLabaOperator.initialize()
 
@@ -583,7 +583,7 @@ class LabaNotation(private var notation: String, private val view: View, private
             return interpolators.size - 1
         }
 
-        fun getInterpolator(index: Int): TimeInterpolator? = if(index >= interpolators.size) null else LabaNotation.Companion.interpolators[index]
+        private fun getInterpolator(index: Int): TimeInterpolator? = if(index >= interpolators.size) null else LabaNotation.Companion.interpolators[index]
     }
 }
 
