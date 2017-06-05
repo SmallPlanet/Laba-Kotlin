@@ -1,13 +1,14 @@
 package com.smallplanet.labainaction.extras
 
 import android.animation.ValueAnimator
+import com.smallplanet.labalib.LabaNotation
 
 /**
  * Created by javiermoreno on 5/25/17.
  */
 
 fun addNewOperators() {
-    com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+    LabaNotation.addLabaOperator {
         symbol = "c"
         animator = {
             view, param, invert ->
@@ -34,7 +35,7 @@ fun addNewOperators() {
     }
 
 
-    com.smallplanet.labalib.LabaNotation.Companion.addLabaOperator {
+    LabaNotation.addLabaOperator {
         symbol = "C"
         animator = {
             view, param, invert ->
