@@ -1,3 +1,95 @@
+# [Laba](https://github.com/kittyMac/laba)
+This project is the Android implementation of [Laba](https://github.com/kittyMac/laba), go there to see the documentation and more information about Laba. Only Android specific details are going to be found here.
+
+##Details
+* This implementation was developed using [**Kotlin 1.1.2-4**](https://kotlinlang.org/)
+* The [Animators](https://developer.android.com/reference/android/animation/Animator.html) API is used to implement Laba. 
+* All the screen units used as parameters for operators are going to be interpreted as [**dp**](https://developer.android.com/guide/practices/screens_support.html#dips-pels)
+*  `l` operator is going to perform a reverse loop instead of a relative loop.
+
+####Interpolators
+
+Available builtin interpolators and their indexes:
+
+* `LinearInterpolator`                   - 0
+* `LinearOutSlowInInterpolator`          - 1
+* `FastOutLinearInInterpolator`          - 2
+* `FastOutSlowInInterpolator`            - 3
+* `AccelerateInterpolator`               - 4
+* `DecelerateInterpolator`               - 5
+* `AccelerateDecelerateInterpolator`     - 6
+* `AnticipateInterpolator`               - 7
+* `OvershootInterpolator`                - 8
+* `AnticipateOvershootInterpolator`      - 9
+* `BounceInterpolator`.                  - 10
+
+
+##Examples
+
+####Move and Rotation sample
+
+~~~kotlin
+targetPink.laba("D1^80|>80|v160|<160|^160|>80|v80|r")
+~~~
+
+![First Sample](screencaptures/simple2.gif)
+
+####A more complex animation
+~~~kotlin
+targetPink.laba("^100e11D1d1|c5e1d0.25|C5e1d0.25|D0.5s3f0!p30^100")
+~~~
+
+![First Sample](screencaptures/simple1.gif)
+
+##Extending Laba
+
+Laba can be extended by adding more operators or interpolators. Below are some examples.
+
+* Operators extension
+
+	~~~kotlin
+	LabaNotation.addLabaOperator {
+	        symbol = "c" //Symbol for this operator
+	        animator = { //Animator implementation for this operator
+	            view, param, invert ->
+	            val localParam = if (invert) 1 / (param ?: defaultParam) else (param ?: defaultParam)
+	
+	            val originalScale: Float by lazy { view.scaleX }
+	            val toScaleX: Float by lazy { originalScale - localParam }
+	
+	            val animator = ValueAnimator.ofFloat(0f, 1f)
+	            animator.addUpdateListener {
+	                animation ->
+	                view.scaleX = originalScale - toScaleX * animation.animatedValue as Float
+	            }
+	            animator
+	        }
+	        describe = { //function that appends the description of this operator to a StringBuilder
+	            sb, _, param, invert ->
+	            if (!invert)
+	                sb.append("scale x to ${(param ?: defaultParam) * 100}%, ")
+	            else
+	                sb.append("scale x to ${((1 / (param ?: defaultParam)) * 100)}%, ")
+	        }
+	        defaultParam = 1f //Default param for this operator
+	    }
+	 
+	//Use of this new operator
+	view.laba("<100c2")
+	~~~
+* Interpolators extension
+
+	~~~kotlin
+	val index = LabaNotation.addInterpolator(TimeInterpolator { input ->
+	        val x = 2.0f * input - 1.0f
+	        0.5f * (x * x * x + 1.0f)
+	    })
+	    
+	//Use of this new interpolator
+	view.laba("<100e$index|r")
+	~~~
+
+
 ## License
 
 Laba is free software distributed under the terms of the MIT license, reproduced below. Laba may be used for any purpose, including commercial purposes, at absolutely no cost. No paperwork, no royalties, no GNU-like "copyleft" restrictions. Just download and enjoy.
