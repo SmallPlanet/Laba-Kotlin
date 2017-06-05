@@ -471,6 +471,9 @@ class LabaNotation(private var notation: String, private val view: View, private
         return Pair(result, if(result == null) index else i)
     }
 
+    /**
+     * Performed the animation specified by the laba expression
+     */
     fun animate() {
         masterAnimatorSet.start()
     }
