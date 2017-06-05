@@ -144,7 +144,7 @@ class LabaNotation(private var notation: String, private val view: View, private
         var delay: Float? = null
         var absoluteLoop: Int? = null
         var reverseLoop: Int? = null
-        var interpolator: android.animation.TimeInterpolator? = null
+        var interpolator: android.animation.TimeInterpolator? = LinearInterpolator()
         var invert = false
         var tempBuilder = StringBuilder("")
 
@@ -183,7 +183,7 @@ class LabaNotation(private var notation: String, private val view: View, private
         val clearTempSequence= {
             duration = null
             delay = null
-            interpolator = null
+            interpolator = LinearInterpolator()
             absoluteLoop = null
             invert = false
             tempBuilder = StringBuilder("")
@@ -288,7 +288,7 @@ class LabaNotation(private var notation: String, private val view: View, private
         var delay: Float? = null
         var absoluteLoop: Int? = null
         var reverseLoop: Int? = null
-        var interpolator: android.animation.TimeInterpolator? = null
+        var interpolator: android.animation.TimeInterpolator? = LinearInterpolator()
         var invert = false
 
         //AnimatorSet for the current sequence
@@ -346,7 +346,7 @@ class LabaNotation(private var notation: String, private val view: View, private
             sequenceAnimatorSet = android.animation.AnimatorSet()
             duration = LabaNotation.defaultDuration
             delay = null
-            interpolator = null
+            interpolator = LinearInterpolator()
             absoluteLoop = null
             invert = false
 
