@@ -1,13 +1,13 @@
 # [Laba](https://github.com/kittyMac/laba)
 This project is the Android implementation of [Laba](https://github.com/kittyMac/laba), go there to see the documentation and more information about Laba. Only Android specific details are going to be found here.
 
-##Details
+## Details
 * This implementation was developed using [**Kotlin 1.1.2-4**](https://kotlinlang.org/)
 * The [Animators](https://developer.android.com/reference/android/animation/Animator.html) API is used to implement Laba. 
 * All the screen units used as parameters for operators are going to be interpreted as [**dp**](https://developer.android.com/guide/practices/screens_support.html#dips-pels)
 *  `l` operator is going to perform a reverse loop instead of a relative loop.
 
-####Interpolators
+#### Interpolators
 
 Available builtin interpolators and their indexes:
 
@@ -24,9 +24,9 @@ Available builtin interpolators and their indexes:
 * `BounceInterpolator`.                  - 10
 
 
-##Examples
+## Examples
 
-####Move and Rotation sample
+#### Move and Rotation sample
 
 ~~~kotlin
 targetPink.laba("D1^80|>80|v160|<160|^160|>80|v80|r")
@@ -34,14 +34,14 @@ targetPink.laba("D1^80|>80|v160|<160|^160|>80|v80|r")
 
 ![First Sample](screencaptures/simple2.gif)
 
-####A more complex animation
+#### A more complex animation
 ~~~kotlin
 targetPink.laba("^100e11D1d1|c5e1d0.25|C5e1d0.25|D0.5s3f0!p30^100")
 ~~~
 
 ![First Sample](screencaptures/simple1.gif)
 
-##Extending Laba
+## Extending Laba
 
 Laba can be extended by adding more operators or interpolators. Below are some examples.
 
