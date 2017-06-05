@@ -39,7 +39,7 @@ fun View.laba(notation: String, returnDescriptin: Boolean = false, completeActio
 /**
  * LabaNotation class
  *
- * This class provides the core functionalities for the laba animations. This animatinons consist of a group of steps that define a coreography
+ * This class provides the core functionalities for the laba animations. This animatinons consist of a group of steps that define a coreography. Uses dp as units.
  *
  * `<` move left
  *
