@@ -122,7 +122,7 @@ class LabaNotation(private var notation: String, private val view: View, private
         masterAnimatorSet.addListener(object: Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {}
 
-            override fun onAnimationEnd(animation: Animator?) = completeAction?.invoke(animation)!!
+            override fun onAnimationEnd(animation: Animator?) { completeAction?.invoke(animation) }
 
             override fun onAnimationCancel(animation: Animator?) {}
 
