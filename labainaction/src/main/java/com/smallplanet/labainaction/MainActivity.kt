@@ -32,8 +32,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        durationNegation.setOnClickListener {
+        durationnegation.setOnClickListener {
             val intent = Intent(this, DurationNegation::class.java)
+            startActivity(intent)
+        }
+
+        countdown.setOnClickListener {
+            val intent = Intent(this, CountDown::class.java)
             startActivity(intent)
         }
     }

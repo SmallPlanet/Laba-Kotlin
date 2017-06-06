@@ -18,9 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MultielementAnimation" />
-        <activity android:name=".MoveRotation" />
-        <activity android:name=".DurationNegation"></activity>
+        <activity android:name=".MultielementAnimation"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MoveRotation"
+            android:screenOrientation="portrait" />
+        <activity android:name=".DurationNegation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CountDown"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
