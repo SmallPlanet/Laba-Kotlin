@@ -50,6 +50,11 @@ for (index in 0..container.childCount - 1) {
 
 ![First Sample](screencaptures/multielement.gif)
 
+#### 4- More complex animations
+
+![First Sample](screencaptures/countdown.gif)
+
+All the examples seen above can be found in the **labainaction** module.
 
 ## Extending Laba
 
