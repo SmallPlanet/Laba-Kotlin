@@ -4,7 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context="com.smallplanet.labainaction.MainActivity">
+
+    <Button
+        android:id="@+id/moverotation"
+        android:text="Move &amp; Rotation"
+        android:layout_width="200dp"
+        android:layout_height="50dp" />
+
+    <Button
+        android:id="@+id/durationNegation"
+        android:text="Duration Negation"
+        android:layout_width="200dp"
+        android:layout_height="50dp" />
 
     <Button
         android:id="@+id/multiviewopen"

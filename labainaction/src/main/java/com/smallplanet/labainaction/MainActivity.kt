@@ -26,10 +26,15 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MultielementAnimation::class.java)
             startActivity(intent)
         }
-    }
 
-    fun startAnimations() {
-        //targetPink.laba("^100e11D1d1|c5e1d0.25|C5e1d0.25|D0.5s3f0!p30^100")
-        //targetPink.laba("D1^80|>80|v160|<160|^160|>80|v80|r")
+        moverotation.setOnClickListener {
+            val intent = Intent(this, MoveRotation::class.java)
+            startActivity(intent)
+        }
+
+        durationNegation.setOnClickListener {
+            val intent = Intent(this, DurationNegation::class.java)
+            startActivity(intent)
+        }
     }
 }

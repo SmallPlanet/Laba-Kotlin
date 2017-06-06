@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MultielementAnimation"></activity>
+        <activity android:name=".MultielementAnimation" />
+        <activity android:name=".MoveRotation" />
+        <activity android:name=".DurationNegation"></activity>
     </application>
 
 </manifest>
