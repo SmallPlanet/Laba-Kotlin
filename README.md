@@ -26,7 +26,7 @@ Available builtin interpolators and their indexes:
 
 ## Examples
 
-#### Move and Rotation sample
+#### 1- Move and Rotation sample
 
 ~~~kotlin
 targetPink.laba("D1^80|>80|v160|<160|^160|>80|v80|r")
@@ -34,12 +34,22 @@ targetPink.laba("D1^80|>80|v160|<160|^160|>80|v80|r")
 
 ![First Sample](screencaptures/simple2.gif)
 
-#### A more complex animation
+#### 2- Using duration and negation operator
 ~~~kotlin
 targetPink.laba("^100e11D1d1|c5e1d0.25|C5e1d0.25|D0.5s3f0!p30^100")
 ~~~
 
 ![First Sample](screencaptures/simple1.gif)
+
+#### 3- Animating more than one element
+~~~kotlin
+for (index in 0..container.childCount - 1) {
+    container.getChildAt(index).laba("pD${1 + 0.25f*index}d1|>1000e7d1")
+}
+~~~
+
+![First Sample](screencaptures/multielement.gif)
+
 
 ## Extending Laba
 
@@ -49,30 +59,30 @@ Laba can be extended by adding more operators or interpolators. Below are some e
 
 	~~~kotlin
 	LabaNotation.addLabaOperator {
-	        symbol = "c" //Symbol for this operator
-	        animator = { //Animator implementation for this operator
-	            view, param, invert ->
-	            val localParam = if (invert) 1 / (param ?: defaultParam) else (param ?: defaultParam)
+        symbol = "c" //Symbol for this operator
+        animator = { //Animator implementation for this operator
+            view, param, invert ->
+            val localParam = if (invert) 1 / (param ?: defaultParam) else (param ?: defaultParam)
 	
-	            val originalScale: Float by lazy { view.scaleX }
-	            val toScaleX: Float by lazy { originalScale - localParam }
+            val originalScale: Float by lazy { view.scaleX }
+            val toScaleX: Float by lazy { originalScale - localParam }
 	
-	            val animator = ValueAnimator.ofFloat(0f, 1f)
-	            animator.addUpdateListener {
-	                animation ->
-	                view.scaleX = originalScale - toScaleX * animation.animatedValue as Float
-	            }
-	            animator
-	        }
-	        describe = { //function that appends the description of this operator to a StringBuilder
-	            sb, _, param, invert ->
-	            if (!invert)
-	                sb.append("scale x to ${(param ?: defaultParam) * 100}%, ")
-	            else
-	                sb.append("scale x to ${((1 / (param ?: defaultParam)) * 100)}%, ")
-	        }
-	        defaultParam = 1f //Default param for this operator
-	    }
+            val animator = ValueAnimator.ofFloat(0f, 1f)
+            animator.addUpdateListener {
+                animation ->
+                view.scaleX = originalScale - toScaleX * animation.animatedValue as Float
+            }
+            animator
+        }
+        describe = { //function that appends the description of this operator to a StringBuilder
+            sb, _, param, invert ->
+            if (!invert)
+                sb.append("scale x to ${(param ?: defaultParam) * 100}%, ")
+            else
+                sb.append("scale x to ${((1 / (param ?: defaultParam)) * 100)}%, ")
+        }
+        defaultParam = 1f //Default param for this operator
+    }
 	 
 	//Use of this new operator
 	view.laba("<100c2")
@@ -81,9 +91,9 @@ Laba can be extended by adding more operators or interpolators. Below are some e
 
 	~~~kotlin
 	val index = LabaNotation.addInterpolator(TimeInterpolator { input ->
-	        val x = 2.0f * input - 1.0f
-	        0.5f * (x * x * x + 1.0f)
-	    })
+        val x = 2.0f * input - 1.0f
+        0.5f * (x * x * x + 1.0f)
+    })
 	    
 	//Use of this new interpolator
 	view.laba("<100e$index|r")
