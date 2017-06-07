@@ -105,6 +105,27 @@ Laba can be extended by adding more operators or interpolators. Below are some e
 	view.laba("<100e$index|r")
 	~~~
 
+##Install
+
+**Gradle**
+
+~~~groovy
+compile 'com.smallplanet:labalib:0.1'
+
+//Need to add this source to repositories
+maven { url  "http://dl.bintray.com/firstrage/android" }
+~~~
+
+**Mave**
+
+~~~xml
+<dependency>
+  <groupId>com.smallplanet</groupId>
+  <artifactId>labalib</artifactId>
+  <version>0.1</version>
+  <type>pom</type>
+</dependency>
+~~~
 
 ## License
 
