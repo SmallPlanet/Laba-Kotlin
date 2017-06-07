@@ -4,13 +4,13 @@ apply plugin: "org.jetbrains.dokka"
 apply plugin: 'com.jfrog.bintray'
 
 ext {
-    versionName = "0.2"
+    versionName = "0.1-alpha"
 
     //For bintray and jcenter distribution
     bintrayRepo = 'android'
     bintrayName = 'laba'
 
-    publishedGroupId = 'com.smallplanet'
+    publishedGroupId = 'com.smallplanet.android'
     libraryName = 'labalib'
     artifact = 'labalib' //This artifact name should be the same with library module name
 
