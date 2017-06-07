@@ -1,7 +1,7 @@
 package com.smallplanet.labainaction.extras
 
 import android.animation.TimeInterpolator
-import com.smallplanet.labalib.LabaNotation
+import com.smallplanet.labalib.android.LabaNotation
 
 /**
  * Created by javiermoreno on 5/26/17.

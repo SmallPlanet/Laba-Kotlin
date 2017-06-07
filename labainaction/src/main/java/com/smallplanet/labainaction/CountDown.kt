@@ -6,7 +6,7 @@ import android.os.Looper
 import android.support.v7.app.AppCompatActivity
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import com.smallplanet.labalib.laba
+import com.smallplanet.labalib.android.laba
 import kotlinx.android.synthetic.main.activity_count_down.*
 
 class CountDown : AppCompatActivity() {

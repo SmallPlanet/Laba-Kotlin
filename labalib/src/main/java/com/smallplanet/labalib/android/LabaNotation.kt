@@ -1,4 +1,4 @@
-package com.smallplanet.labalib
+package com.smallplanet.labalib.android
 
 import android.animation.Animator
 import android.animation.TimeInterpolator
@@ -144,7 +144,7 @@ class LabaNotation(private var notation: String, private val view: View, private
         var delay: Float? = null
         var absoluteLoop: Int? = null
         var reverseLoop: Int? = null
-        var interpolator: android.animation.TimeInterpolator? = LinearInterpolator()
+        var interpolator: TimeInterpolator? = LinearInterpolator()
         var invert = false
         var tempBuilder = StringBuilder("")
 
@@ -175,7 +175,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 sb.append("$loopType repeating $loopNumber, ")
             }
 
-            sb.append("over ${duration ?: LabaNotation.defaultDuration} seconds. ")
+            sb.append("over ${duration ?: defaultDuration} seconds. ")
         }
 
         //Clearing sequence
@@ -201,14 +201,14 @@ class LabaNotation(private var notation: String, private val view: View, private
             }
 
             //Checking if the current char is an operator
-            if(LabaNotation.operators.containsKey(char.toString())) {
+            if(operators.containsKey(char.toString())) {
 
                 val (paramResult, newIndex) = getParameter(i)
                 val param = paramResult
                 i = newIndex
 
                 //Getting the description of the current operator
-                LabaNotation.operators[char.toString()]?.describe?.invoke(tempBuilder, view, param, invert)
+                operators[char.toString()]?.describe?.invoke(tempBuilder, view, param, invert)
             }
 
             //State operators checking
@@ -223,7 +223,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                     when (char) {
                         'd' -> duration = param
                         'D' -> delay = param
-                        'e' -> interpolator = LabaNotation.getInterpolator(param.toInt())
+                        'e' -> interpolator = getInterpolator(param.toInt())
                         'L' -> absoluteLoop = param.toInt()
                         'l' -> reverseLoop = param.toInt()
                     }
@@ -284,18 +284,18 @@ class LabaNotation(private var notation: String, private val view: View, private
      */
     private fun processNotation(index: Int = 0): Pair<android.animation.AnimatorSet, Int> {
         //Variables that hold the state of the current subsegment
-        var duration: Float = LabaNotation.defaultDuration
+        var duration: Float = defaultDuration
         var delay: Float? = null
         var absoluteLoop: Int? = null
         var reverseLoop: Int? = null
-        var interpolator: android.animation.TimeInterpolator? = LinearInterpolator()
+        var interpolator: TimeInterpolator? = LinearInterpolator()
         var invert = false
 
         //AnimatorSet for the current sequence
         //this guy is going to control the animation of all the opeartors that are going to be stored in animators
         var sequenceAnimatorSet = android.animation.AnimatorSet()
         //Storage for the animator of each one of the operators in the current sequence
-        val sequenceAnimators = mutableListOf<android.animation.Animator?>()
+        val sequenceAnimators = mutableListOf<Animator?>()
         //Contains the animators of each segment
         val segmentAnimatorSets = mutableListOf<android.animation.AnimatorSet>()
 
@@ -316,14 +316,14 @@ class LabaNotation(private var notation: String, private val view: View, private
             if(absoluteLoop != null || reverseLoop != null) {
                 val loop = if (absoluteLoop != null) absoluteLoop else reverseLoop
                 sequenceAnimators
-                        .filterIsInstance<android.animation.ValueAnimator>()
+                        .filterIsInstance<ValueAnimator>()
                         .forEach {
                             if(loop != -1)
                                 it.repeatCount = if (loop != 0) (loop!! - 1) else loop
                             else
-                                it.repeatCount = android.animation.ValueAnimator.INFINITE
+                                it.repeatCount = ValueAnimator.INFINITE
 
-                            it.repeatMode = if (absoluteLoop != null) android.animation.ValueAnimator.RESTART else android.animation.ValueAnimator.REVERSE
+                            it.repeatMode = if (absoluteLoop != null) ValueAnimator.RESTART else ValueAnimator.REVERSE
                         }
             }
 
@@ -344,7 +344,7 @@ class LabaNotation(private var notation: String, private val view: View, private
         //Clearing data for the current sequence to get ready to analyze the next sequence
         val clearSequence = {
             sequenceAnimatorSet = android.animation.AnimatorSet()
-            duration = LabaNotation.defaultDuration
+            duration = defaultDuration
             delay = null
             interpolator = LinearInterpolator()
             absoluteLoop = null
@@ -379,7 +379,7 @@ class LabaNotation(private var notation: String, private val view: View, private
             }
 
             //Checking if the current token is contained in our operators
-            if(LabaNotation.operators.containsKey(char.toString())) {
+            if(operators.containsKey(char.toString())) {
 
                 //Getting possible parameter for this operator
                 val (paramResult, newIndex) = getParameter(i)
@@ -388,7 +388,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 i = newIndex
 
                 //Adding operator to our sequence
-                sequenceAnimators.add(LabaNotation.operators[char.toString()]?.animator?.invoke(view, param, invert))
+                sequenceAnimators.add(operators[char.toString()]?.animator?.invoke(view, param, invert))
             }
 
             //State operators checking
@@ -404,7 +404,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                     when (char) {
                         'd' -> duration = param
                         'D' -> delay = param
-                        'e' -> interpolator = LabaNotation.getInterpolator(param.toInt())
+                        'e' -> interpolator = getInterpolator(param.toInt())
                         'L' -> absoluteLoop = param.toInt()
                         'l' -> reverseLoop = param.toInt()
                     }
@@ -439,7 +439,7 @@ class LabaNotation(private var notation: String, private val view: View, private
         var param: Float? = null
 
         //Checking if the next char is not an operato, if thats the case the parameter gets parsed
-        if (nextChar != null && !LabaNotation.operators.containsKey(nextChar.toString()) && !LabaNotation.controlOperators.contains(nextChar)) {
+        if (nextChar != null && !operators.containsKey(nextChar.toString()) && !controlOperators.contains(nextChar)) {
             val (paramResult, newIndex) = parseParam(i + 1)
             param = paramResult
             i = newIndex - 1
@@ -505,7 +505,7 @@ class LabaNotation(private var notation: String, private val view: View, private
 
         //Initialization of the builtin operators
         init {
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "<"
                 animator = {
                     view, param, invert ->
@@ -529,7 +529,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 100f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = ">"
                 animator = {
                     view, param, invert ->
@@ -553,7 +553,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 100f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "^"
                 animator = {
                     view, param, invert ->
@@ -577,7 +577,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 100f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "v"
                 animator = {
                     view, param, invert ->
@@ -601,7 +601,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 100f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "f"
                 animator = {
                     view, param, invert ->
@@ -627,7 +627,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 0f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "r"
                 animator = {
                     view, param, invert ->
@@ -652,7 +652,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 360f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "p"
                 animator = {
                     view, param, invert ->
@@ -676,7 +676,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 360f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "y"
                 animator = {
                     view, param, invert ->
@@ -700,7 +700,7 @@ class LabaNotation(private var notation: String, private val view: View, private
                 defaultParam = 360f
             }
 
-            LabaNotation.addLabaOperator {
+            addLabaOperator {
                 symbol = "s"
                 animator = {
                     view, param, invert ->
@@ -741,7 +741,7 @@ class LabaNotation(private var notation: String, private val view: View, private
 
             //Adding the operator ot the dictionary of operators using the symbol as the key
             newLabaOperator.symbol?.let {
-                LabaNotation.operators[it] = newLabaOperator
+                operators[it] = newLabaOperator
             }
 
         }
@@ -763,7 +763,7 @@ class LabaNotation(private var notation: String, private val view: View, private
          * @param [index] of the interpolator to be returned, private use only
          * @return the interpolator in this position
          */
-        private fun getInterpolator(index: Int): TimeInterpolator? = if(index >= interpolators.size) null else LabaNotation.interpolators[index]
+        private fun getInterpolator(index: Int): TimeInterpolator? = if(index >= interpolators.size) null else interpolators[index]
     }
 }
 
@@ -775,7 +775,7 @@ class LabaNotation(private var notation: String, private val view: View, private
  * @param [describe] function to be called to get a description of what this operator does
  * @constructor Creates an object that encapsulates the functionalities of the laba coreography system.
  */
-class LabaOperator(var symbol: String? = null, var defaultParam: Float = 0f, var animator: ((View, Float?, Boolean) -> android.animation.Animator)? = null, var describe: ((StringBuilder, View, Float?, Boolean) -> Unit)? = null)
+class LabaOperator(var symbol: String? = null, var defaultParam: Float = 0f, var animator: ((View, Float?, Boolean) -> Animator)? = null, var describe: ((StringBuilder, View, Float?, Boolean) -> Unit)? = null)
 
 /*------------------------------------EXTENSIONS------------------------------------*/
 /**

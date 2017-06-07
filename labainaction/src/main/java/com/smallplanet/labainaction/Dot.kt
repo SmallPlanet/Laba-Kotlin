@@ -1,7 +1,7 @@
 package com.smallplanet.labainaction
 
 import android.view.View
-import com.smallplanet.labalib.laba
+import com.smallplanet.labalib.android.laba
 
 /**
  * Created by javiermoreno on 6/6/17.

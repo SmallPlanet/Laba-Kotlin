@@ -2,7 +2,7 @@ package com.smallplanet.labainaction
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.smallplanet.labalib.laba
+import com.smallplanet.labalib.android.laba
 import kotlinx.android.synthetic.main.activity_duration_negation.*
 
 class DurationNegation : AppCompatActivity() {
