@@ -1,4 +1,4 @@
-[ ![Download](null/packages/firstrage/android/laba/images/download.svg?version=0.1-alpha) ](https://bintray.com/firstrage/android/laba/0.1-alpha/link)
+[ ![Download](https://api.bintray.com/packages/firstrage/android/laba/images/download.svg) ](https://bintray.com/firstrage/android/laba/_latestVersion)
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/SmallPlanetAndroid/Laba#license)
 
 # [Laba](https://github.com/kittyMac/laba)
