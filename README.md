@@ -108,7 +108,7 @@ Laba can be extended by adding more operators or interpolators. Below are some e
 	view.laba("<100e$index|r")
 	~~~
 
-##Install
+## Install
 
 **Gradle**
 
