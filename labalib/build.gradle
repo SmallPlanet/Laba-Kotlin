@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: "org.jetbrains.dokka"
+apply plugin: 'com.jfrog.bintray'
 
 
 android {
@@ -29,6 +30,25 @@ dokka {
     outputFormat = 'html'
     outputDirectory = "$buildDir/dokkadocs"
     sourceDirs = files('src/main/java')
+}
+
+bintray {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    user = properties.getProperty('bintray.user')
+    key = properties.getProperty('bintray.apikey')
+    println "bintray credentials - $user:$key"
+
+    pkg {
+        repo = 'android'
+        name = 'laba'
+        version {
+            name = '1.0.0-Dev'
+            desc = 'Development version of the Laba plugin'
+            released  = new Date()
+            vcsTag = '1.0.0'
+        }
+    }
 }
 
 dependencies {

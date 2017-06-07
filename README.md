@@ -6,6 +6,7 @@ This project is the Android implementation of [Laba](https://github.com/kittyMac
 * The [Animators](https://developer.android.com/reference/android/animation/Animator.html) API is used to implement Laba. 
 * All the screen units used as parameters for operators are going to be interpreted as [**dp**](https://developer.android.com/guide/practices/screens_support.html#dips-pels)
 *  `l` operator is going to perform a reverse loop instead of a relative loop.
+*  Android SDK Version: 19+
 
 #### Interpolators
 
