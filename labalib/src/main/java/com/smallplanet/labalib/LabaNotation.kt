@@ -774,7 +774,6 @@ class LabaNotation(private var notation: String, private val view: View, private
  * @param [animator] animation performed by this operator
  * @param [describe] function to be called to get a description of what this operator does
  * @constructor Creates an object that encapsulates the functionalities of the laba coreography system.
- *
  */
 class LabaOperator(var symbol: String? = null, var defaultParam: Float = 0f, var animator: ((View, Float?, Boolean) -> android.animation.Animator)? = null, var describe: ((StringBuilder, View, Float?, Boolean) -> Unit)? = null)
 

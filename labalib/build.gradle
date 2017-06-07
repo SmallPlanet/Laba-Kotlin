@@ -3,6 +3,35 @@ apply plugin: 'kotlin-android'
 apply plugin: "org.jetbrains.dokka"
 apply plugin: 'com.jfrog.bintray'
 
+ext {
+    versionName = "0.1"
+
+    //For bintray and jcenter distribution
+    bintrayRepo = 'android'
+    bintrayName = 'laba'
+
+    publishedGroupId = 'com.smallplanet'
+    libraryName = 'labalib'
+    artifact = 'labalib' //This artifact name should be the same with library module name
+
+    libraryDescription = 'Simple, clean and short description'
+
+    siteUrl = 'https://github.com/SmallPlanetAndroid/Laba'
+    gitUrl = 'https://github.com/SmallPlanetAndroid/Laba.git'
+
+    libraryVersion = versionName
+
+    developerId = 'javier.moreno'
+    developerName = 'javier'
+    developerEmail = 'javier.moreno@smallplanet.com'
+
+    licenseName = "MIT"
+    licenseUrl = "https://github.com/SmallPlanetAndroid/Laba#license"
+    allLicenses = ["MIT"]
+
+}
+
+
 
 android {
     compileSdkVersion 25
@@ -13,7 +42,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -26,28 +55,23 @@ android {
     }
 }
 
+//Documentation generation for maven publishing
+apply from: '../install.gradle'
+apply from: '../bintray.gradle'
+
 dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/dokkadocs"
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/docs"
     sourceDirs = files('src/main/java')
 }
 
-bintray {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    user = properties.getProperty('bintray.user')
-    key = properties.getProperty('bintray.apikey')
-    println "bintray credentials - $user:$key"
+tasks.withType(Javadoc) {
+    excludes = ['**/*.kt']
+}
 
-    pkg {
-        repo = 'android'
-        name = 'laba'
-        version {
-            name = '1.0.0-Dev'
-            desc = 'Development version of the Laba plugin'
-            released  = new Date()
-            vcsTag = '1.0.0'
-        }
+afterEvaluate {
+    if (project.hasProperty("javadocJar")) {
+        tasks.javadocJar.dependsOn dokka
     }
 }
 
