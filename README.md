@@ -1,3 +1,6 @@
+[ ![Download](https://api.bintray.com/packages/firstrage/android/laba/images/download.svg) ](https://bintray.com/firstrage/android/laba/_latestVersion)
+[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/SmallPlanetAndroid/Laba#license)
+
 # [Laba](https://github.com/kittyMac/laba)
 This project is the Android implementation of [Laba](https://github.com/kittyMac/laba), go there to see the documentation and more information about Laba. Only Android specific details are going to be found here.
 
