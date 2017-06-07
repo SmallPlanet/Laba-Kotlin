@@ -113,7 +113,7 @@ Laba can be extended by adding more operators or interpolators. Below are some e
 **Gradle**
 
 ~~~groovy
-compile 'com.smallplanet:labalib:0.1'
+compile 'com.smallplanet.android:labalib:0.1-alpha'
 
 //Need to add this source to repositories
 maven { url  "http://dl.bintray.com/firstrage/android" }
@@ -123,9 +123,9 @@ maven { url  "http://dl.bintray.com/firstrage/android" }
 
 ~~~xml
 <dependency>
-  <groupId>com.smallplanet</groupId>
+  <groupId>com.smallplanet.android</groupId>
   <artifactId>labalib</artifactId>
-  <version>0.1</version>
+  <version>0.1-alpha</version>
   <type>pom</type>
 </dependency>
 ~~~
