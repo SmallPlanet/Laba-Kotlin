@@ -1,4 +1,4 @@
-package com.smallplanet.labalib;
+package com.smallplanet.labalib.android;
 
 import org.junit.Test;
 

@@ -4,7 +4,7 @@ apply plugin: "org.jetbrains.dokka"
 apply plugin: 'com.jfrog.bintray'
 
 ext {
-    versionName = "0.1"
+    versionName = "0.2"
 
     //For bintray and jcenter distribution
     bintrayRepo = 'android'
