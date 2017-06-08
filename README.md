@@ -114,9 +114,6 @@ Laba can be extended by adding more operators or interpolators. Below are some e
 
 ~~~groovy
 compile 'com.smallplanet.android:labalib:0.1-alpha'
-
-//Need to add this source to repositories
-maven { url  "http://dl.bintray.com/firstrage/android" }
 ~~~
 
 **Mave**
